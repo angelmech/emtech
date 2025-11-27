@@ -1,29 +1,28 @@
 ﻿using Fusion;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class NetworkManager : MonoBehaviour
+public class NetworkPlayer : NetworkBehaviour
 {
-    public NetworkPrefabRef playerPrefab;
-    private NetworkRunner runner;
+    public float speed = 3f;
+    public string Role; // "Therapist" or "Patient"
 
-    async void Awake()
+    void Update()
     {
-        runner = gameObject.AddComponent<NetworkRunner>();
-        runner.ProvideInput = true;
+        if (!Object.HasInputAuthority)
+            return;
 
-        // Add callbacks
-        var callbacks = gameObject.AddComponent<Callbacks>();
-        callbacks.playerPrefab = playerPrefab;
-        runner.AddCallbacks(callbacks);
+        Vector2 move = Vector2.zero;
 
-        // Start host without specifying Scene (current scene used)
-        await runner.StartGame(new StartGameArgs
+        // Keyboard movement
+        if (Keyboard.current != null)
         {
-            GameMode = GameMode.Host,
-            SessionName = "TherapyRoom",
-            PlayerCount = 2
-        });
+            move.x = (Keyboard.current.dKey.isPressed ? 1 : 0) + (Keyboard.current.aKey.isPressed ? -1 : 0);
+            move.y = (Keyboard.current.wKey.isPressed ? 1 : 0) + (Keyboard.current.sKey.isPressed ? -1 : 0);
+        }
 
-        Debug.Log("HOST STARTED");
+        // Apply movement
+        transform.Translate(new Vector3(move.x, 0, move.y) * speed * Time.deltaTime, Space.World);
+
     }
 }

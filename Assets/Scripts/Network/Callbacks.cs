@@ -10,9 +10,16 @@ public class Callbacks : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
+        // Decide spawn position
         Vector3 spawnPos = new Vector3(player.RawEncoded * 2f, 0, 0);
-        runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
-        Debug.Log($"Player {player} joined.");
+
+        // Determine role
+        string role = runner.IsServer && player == runner.LocalPlayer ? "Therapist" : "Patient";
+
+        var playerObject = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
+        playerObject.GetComponent<NetworkPlayer>().Role = role;
+
+        Debug.Log($"Player {player} joined as {role}");
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {}

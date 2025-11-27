@@ -2,26 +2,46 @@
 using UnityEngine;
 using System.Threading.Tasks;
 
-public class TherapyNetworkManager : MonoBehaviour
+public class NetworkManager : MonoBehaviour
 {
-    public NetworkPrefabRef playerPrefab; // assign later in inspector
+    public NetworkPrefabRef playerPrefab;
+
     private NetworkRunner runner;
 
-    async void Awake()
+    public async Task StartHost()
     {
-        // Add NetworkRunner component
         runner = gameObject.AddComponent<NetworkRunner>();
         runner.ProvideInput = true;
 
-        // Start the host automatically
+        var callbacks = gameObject.AddComponent<Callbacks>();
+        callbacks.playerPrefab = playerPrefab;
+        runner.AddCallbacks(callbacks);
+
         await runner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Host,
             SessionName = "TherapyRoom",
-           // Scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex,
             PlayerCount = 2
         });
 
-        Debug.Log("Host started automatically!");
+        Debug.Log("HOST STARTED");
+    }
+
+    public async Task JoinSession()
+    {
+        runner = gameObject.AddComponent<NetworkRunner>();
+        runner.ProvideInput = true;
+
+        var callbacks = gameObject.AddComponent<Callbacks>();
+        callbacks.playerPrefab = playerPrefab;
+        runner.AddCallbacks(callbacks);
+
+        await runner.StartGame(new StartGameArgs
+        {
+            GameMode = GameMode.Client,
+            SessionName = "TherapyRoom"
+        });
+
+        Debug.Log("CLIENT JOINED");
     }
 }
