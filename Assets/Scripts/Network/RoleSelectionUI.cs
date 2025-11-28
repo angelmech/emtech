@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class RoleSelectionUI : MonoBehaviour
 {
@@ -13,17 +14,17 @@ public class RoleSelectionUI : MonoBehaviour
         patientButton.onClick.AddListener(OnPatientClicked);
     }
 
-    void OnTherapistClicked()
+    private async void OnTherapistClicked()
     {
         Debug.Log("Therapist selected → Start Host");
-        networkManager.StartHost();
+        await networkManager.StartHost();
         gameObject.SetActive(false);
     }
 
-    void OnPatientClicked()
+    private async void OnPatientClicked()
     {
         Debug.Log("Patient selected → Join Session");
-        networkManager.JoinSession();
+        await networkManager.JoinSession();
         gameObject.SetActive(false);
     }
-}
+}*/
