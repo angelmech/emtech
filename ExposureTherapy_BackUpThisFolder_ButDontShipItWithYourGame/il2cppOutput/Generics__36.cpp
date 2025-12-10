@@ -61191,7 +61191,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EmptyInternalEnumerator_1__cctor_mB0A335
 #pragma clang diagnostic ignored "-Winvalid-offsetof"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
-// Method Definition Index: 82950
+// Method Definition Index: 82953
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2_Dispose_m1EEB4B4E7ACD7EB5DB5DC16FF1A52D430C9135C5_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61290,7 +61290,7 @@ IL_005d:
 		return;
 	}
 }
-// Method Definition Index: 82951
+// Method Definition Index: 82954
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2_RegisterEncryptionKey_m87E57AB9528EB2B53D0CD6A03A3B339AE184E06B_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031* ___1_key, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61396,7 +61396,7 @@ IL_007c:
 		return;
 	}
 }
-// Method Definition Index: 82952
+// Method Definition Index: 82955
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2_DeleteEncryptionKey_m5067A179783C4ED99B0CB58C0E6B5B572B7B6B13_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61465,7 +61465,7 @@ IL_0051:
 		return;
 	}
 }
-// Method Definition Index: 82953
+// Method Definition Index: 82956
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_HasEncryptionForHandle_m7C2BF730AE3BC235B28D26294789B2E6000E86EF_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, const RuntimeMethod* method) 
 {
 	bool V_0 = false;
@@ -61485,7 +61485,7 @@ IL_0010:
 		return L_3;
 	}
 }
-// Method Definition Index: 82954
+// Method Definition Index: 82957
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Wrap_m7E10E5B02C8E6A8872D9F703E7A5D482A2CBB7B7_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61541,7 +61541,7 @@ IL_0032:
 		return L_11;
 	}
 }
-// Method Definition Index: 82955
+// Method Definition Index: 82958
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Unwrap_m3E0E53BA0B2E56BBE3C7F783462B40120B5AF9D5_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61597,7 +61597,7 @@ IL_0032:
 		return L_11;
 	}
 }
-// Method Definition Index: 82956
+// Method Definition Index: 82959
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031* EncryptionManager_2_GenerateKey_m716AA1DD4281E92AE871ED35D99B95ACC0C34B9F_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61617,7 +61617,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A8261
 		return L_1;
 	}
 }
-// Method Definition Index: 82957
+// Method Definition Index: 82960
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_ComputeHash_m83B48FD9C560FD0F628BFAC879A42BF47384DE65_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61695,7 +61695,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82958
+// Method Definition Index: 82961
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_VerifyHash_m9BB710DCFB01599F0426AFABC65D4BD16595441F_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61773,7 +61773,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82959
+// Method Definition Index: 82962
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Encrypt_mC526AA437202FFA56652504A7D9DD7A9C7A3F2D1_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61851,7 +61851,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82960
+// Method Definition Index: 82963
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Decrypt_m2099F955A22890D58CD56EE7B13DF387645D33CE_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, NetAddress_t2F585AC7C9A03E60B16A9E6E8E88A330A8283678 ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -61929,7 +61929,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82961
+// Method Definition Index: 82964
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2__ctor_m4810C198F2D2F559291138903ACADEC1329DD301_gshared (EncryptionManager_2_t06111BC2281A8F0F2BE031904E41C0E7D30948CD* __this, const RuntimeMethod* method) 
 {
 	{
@@ -61949,7 +61949,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2__ctor_m4810C198F2D2F
 #pragma clang diagnostic ignored "-Winvalid-offsetof"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
-// Method Definition Index: 82950
+// Method Definition Index: 82953
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2_Dispose_m586EC2786B5840670A433CE5B6DF545A30147B16_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62051,7 +62051,7 @@ IL_005d:
 		return;
 	}
 }
-// Method Definition Index: 82951
+// Method Definition Index: 82954
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2_RegisterEncryptionKey_mF29C9D382F227E081A97CEE988D5BA5A4138456D_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031* ___1_key, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62162,7 +62162,7 @@ IL_007c:
 		return;
 	}
 }
-// Method Definition Index: 82952
+// Method Definition Index: 82955
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2_DeleteEncryptionKey_m76A5F2065A5B6B7CD4ECD25C0C8570F90836EA70_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62235,7 +62235,7 @@ IL_0051:
 		return;
 	}
 }
-// Method Definition Index: 82953
+// Method Definition Index: 82956
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_HasEncryptionForHandle_m975A363D8A009D43BCE38C5F9AB4E223AEF25DE3_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, const RuntimeMethod* method) 
 {
 	const uint32_t SizeOf_THandler_t89F8360BF61D191EE405811BC98267841B7D9EEF = il2cpp_codegen_sizeof(il2cpp_rgctx_data_no_init(method->klass->rgctx_data, 13));
@@ -62257,7 +62257,7 @@ IL_0010:
 		return L_3;
 	}
 }
-// Method Definition Index: 82954
+// Method Definition Index: 82957
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Wrap_m553499434888FA50C7AAF542FB6AD7C5BEDECDE7_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62316,7 +62316,7 @@ IL_0032:
 		return L_11;
 	}
 }
-// Method Definition Index: 82955
+// Method Definition Index: 82958
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Unwrap_m86459F1045F8869D5163E95B42834C18F96C380B_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62375,7 +62375,7 @@ IL_0032:
 		return L_11;
 	}
 }
-// Method Definition Index: 82956
+// Method Definition Index: 82959
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A82613DF9031* EncryptionManager_2_GenerateKey_mB0F50A46FE68DA6212B6B817CC93408E7EC821F3_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, const RuntimeMethod* method) 
 {
 	const uint32_t SizeOf_TEncryption_t8337DE0C1AA88901F1C0DD01C2D4AFF82C381C44 = il2cpp_codegen_sizeof(il2cpp_rgctx_data_no_init(method->klass->rgctx_data, 8));
@@ -62391,7 +62391,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR ByteU5BU5D_tA6237BF417AE52AD70CFB4EF24A7A8261
 		return L_2;
 	}
 }
-// Method Definition Index: 82957
+// Method Definition Index: 82960
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_ComputeHash_mC09442D34EA1BADCEC3ADFEC9689EDD020E94C68_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62472,7 +62472,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82958
+// Method Definition Index: 82961
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_VerifyHash_m629AF1A4EBE77F41DADF5E5460100A5651CF1FA7_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62553,7 +62553,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82959
+// Method Definition Index: 82962
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Encrypt_m39C15B8A38EC3C2407BEC3E279DEFBCAF35B2F51_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62634,7 +62634,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82960
+// Method Definition Index: 82963
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool EncryptionManager_2_Decrypt_mA97C868408923BB03DBE64C829190D947BB4B4F7_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, Il2CppFullySharedGenericAny ___0_handle, uint8_t* ___1_buffer, int32_t* ___2_length, int32_t ___3_capacity, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
@@ -62715,7 +62715,7 @@ IL_004d:
 		return L_14;
 	}
 }
-// Method Definition Index: 82961
+// Method Definition Index: 82964
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2__ctor_m74944BE385EF37691870CCABBC3BE353E9D14797_gshared (EncryptionManager_2_t9C02DE4F5083515A178EEF14E75184F0A00691B1* __this, const RuntimeMethod* method) 
 {
 	{
@@ -62730,7 +62730,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void EncryptionManager_2__ctor_m74944BE385EF3
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
-// Method Definition Index: 88408
+// Method Definition Index: 88599
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void TraceLogStream_Log_mE8713379CD1590C59657552F174D511A183E566E_inline (TraceLogStream_t692663C7D2E548141B50389D7E67977C44FE6A5C* __this, String_t* ___0_message, const RuntimeMethod* method) 
 {
 	{
@@ -62741,7 +62741,7 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void TraceLogStream_Log_mE8713379
 		return;
 	}
 }
-// Method Definition Index: 88416
+// Method Definition Index: 88607
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void TraceLogStream_Warn_m6C9D643491EEA2270CA22F3B51A7296748740BD3_inline (TraceLogStream_t692663C7D2E548141B50389D7E67977C44FE6A5C* __this, String_t* ___0_message, const RuntimeMethod* method) 
 {
 	{
