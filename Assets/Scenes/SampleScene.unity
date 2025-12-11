@@ -887,7 +887,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a75dd6602e34f56922d88d7107f3bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BasicSpawner
-  playerPrefab:
+  playerPrefabDesktop:
+    RawGuidValue: 8b07efb0197df9c4db8521c39d48ab8c
+  playerPrefabVR:
     RawGuidValue: df7c1d08b6ae4594f8058e31993d7f61
 --- !u!4 &2091915822
 Transform:

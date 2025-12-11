@@ -8,8 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] private NetworkPrefabRef playerPrefab;
-
+    [SerializeField] private NetworkPrefabRef playerPrefabDesktop;
+    [SerializeField] private NetworkPrefabRef playerPrefabVR;
+    
     private NetworkRunner _runner;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
 
@@ -54,9 +55,18 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (runner.IsServer)
         {
+            NetworkPrefabRef prefabToSpawn;
+            
+#if UNITY_ANDROID 
+            prefabToSpawn = playerPrefabVR;
+#else 
+            prefabToSpawn = playerPrefabDesktop;
+#endif
+            
             Vector3 spawnPos = new Vector3(player.RawEncoded * 2, 1, 0);
 
-            NetworkObject obj = runner.Spawn(playerPrefab, spawnPos, Quaternion.identity, player);
+            NetworkObject obj = runner.Spawn(prefabToSpawn, spawnPos, Quaternion.identity, player);
+            
             
             // Assign role: host = Therapist (0), others = Patient (1)
             var playerScript = obj.GetComponent<Player>();
