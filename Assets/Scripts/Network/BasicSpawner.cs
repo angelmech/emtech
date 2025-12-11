@@ -10,6 +10,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] private NetworkPrefabRef playerPrefabDesktop;
     [SerializeField] private NetworkPrefabRef playerPrefabVR;
+    [SerializeField] private Canvas mainUI;
     
     private NetworkRunner _runner;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
@@ -19,6 +20,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     // ---------------------------
     async void StartGame(GameMode mode)
     {
+        // Hides UI after choosing role
+        if (mainUI != null)
+            mainUI.enabled = false;
+        
         _runner = gameObject.AddComponent<NetworkRunner>();
         _runner.ProvideInput = true;
 
@@ -32,21 +37,26 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
     }
+    
+    
+    // GUI interactions
+    public void StartHost() => StartGame(GameMode.Host);
+    public void StartClient() => StartGame(GameMode.Client);
 
     // ---------------------------
     // Simple UI buttons
-    // ---------------------------
-    private void OnGUI()
-    {
-        if (_runner == null)
-        {
-            if (GUI.Button(new Rect(20, 20, 200, 40), "Host"))
-                StartGame(GameMode.Host);
-
-            if (GUI.Button(new Rect(20, 70, 200, 40), "Join"))
-                StartGame(GameMode.Client);
-        }
-    }
+    // --------------------------- 
+    //private void OnGUI()
+    //{
+    //    if (_runner == null)
+    //    {
+    //        if (GUI.Button(new Rect(20, 20, 200, 40), "Host"))
+    //            StartGame(GameMode.Host);
+    //
+    //        if (GUI.Button(new Rect(20, 70, 200, 40), "Join"))
+    //            StartGame(GameMode.Client);
+    //    }
+    //}
 
     // ---------------------------
     // Callbacks
@@ -57,7 +67,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             NetworkPrefabRef prefabToSpawn;
             
-#if UNITY_ANDROID 
+#if UNITY_ANDROID
             prefabToSpawn = playerPrefabVR;
 #else 
             prefabToSpawn = playerPrefabDesktop;
@@ -104,8 +114,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
         input.Set(data);
     }
-
-
+    
+    
     // unused callbacks
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
