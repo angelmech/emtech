@@ -1,122 +1,87 @@
 ﻿using Fusion;
 using Fusion.Sockets;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] private NetworkPrefabRef playerPrefabDesktop;
-    [SerializeField] private NetworkPrefabRef playerPrefabVR;
+    [SerializeField] private NetworkPrefabRef playerPrefab;
     [SerializeField] private Canvas mainUI;
-    
-    private NetworkRunner _runner;
-    private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
 
-    // ---------------------------
-    // Start Host or Client
-    // ---------------------------
-    async void StartGame(GameMode mode)
+    private NetworkRunner _runner;
+    private readonly Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new();
+
+    private async void Start()
     {
-        // Hides UI after choosing role
+        // Automatically start host on app launch
+        await StartGame(GameMode.Host);
+    }
+
+    private async System.Threading.Tasks.Task StartGame(GameMode mode)
+    {
         if (mainUI != null)
             mainUI.enabled = false;
-        
+
         _runner = gameObject.AddComponent<NetworkRunner>();
-        _runner.ProvideInput = true;
+        _runner.ProvideInput = false; // XR input handled locally
 
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
 
-        await _runner.StartGame(new StartGameArgs()
+        await _runner.StartGame(new StartGameArgs
         {
             GameMode = mode,
             SessionName = "TestRoom",
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
-    }
-    
-    
-    // GUI interactions
-    public void StartHost() => StartGame(GameMode.Host);
-    public void StartClient() => StartGame(GameMode.Client);
 
-    // ---------------------------
-    // Simple UI buttons
-    // --------------------------- 
-    //private void OnGUI()
-    //{
-    //    if (_runner == null)
-    //    {
-    //        if (GUI.Button(new Rect(20, 20, 200, 40), "Host"))
-    //            StartGame(GameMode.Host);
-    //
-    //        if (GUI.Button(new Rect(20, 70, 200, 40), "Join"))
-    //            StartGame(GameMode.Client);
-    //    }
-    //}
+        Debug.Log($"Game started as {mode}");
+    }
 
     // ---------------------------
     // Callbacks
     // ---------------------------
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        if (runner.IsServer)
-        {
-            NetworkPrefabRef prefabToSpawn;
-            
-#if UNITY_ANDROID
-            prefabToSpawn = playerPrefabVR;
-#else 
-            prefabToSpawn = playerPrefabDesktop;
-#endif
-            
-            Vector3 spawnPos = new Vector3(player.RawEncoded * 2, 1, 0);
+        if (!runner.IsServer)
+            return; // Only server spawns players
 
-            NetworkObject obj = runner.Spawn(prefabToSpawn, spawnPos, Quaternion.identity, player);
-            
-            
-            // Assign role: host = Therapist (0), others = Patient (1)
-            var playerScript = obj.GetComponent<Player>();
-            if (_spawnedCharacters.Count == 0)
-                playerScript.Role = 0; // Therapist
-            else
-                playerScript.Role = 1; // Patient
+        Debug.Log($"Player joined: {player} | Spawning prefab...");
 
-            _spawnedCharacters[player] = obj;
-        }
+        Transform spawn = GameObject.FindWithTag("Respawn")?.transform;
+        Vector3 spawnPos = spawn != null ? spawn.position : Vector3.zero;
+        Quaternion spawnRot = spawn != null ? spawn.rotation : Quaternion.identity;
+
+        NetworkObject obj = runner.Spawn(
+            playerPrefab,
+            spawnPos,
+            spawnRot,
+            player
+        );
+
+        // Assign role: first = host/therapist
+        Player playerScript = obj.GetComponent<Player>();
+        playerScript.Role = (_spawnedCharacters.Count == 0) ? 0 : 1;
+
+        _spawnedCharacters[player] = obj;
+
+        Debug.Log($"Spawned player prefab at {spawnPos}. Role: {(playerScript.Role == 0 ? "Therapist" : "Patient")}");
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        if (_spawnedCharacters.TryGetValue(player, out NetworkObject o))
+        if (_spawnedCharacters.TryGetValue(player, out NetworkObject obj))
         {
-            runner.Despawn(o);
+            runner.Despawn(obj);
             _spawnedCharacters.Remove(player);
         }
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input)
-    {
-        var data = new NetworkInputData();
-
-        var keyboard = Keyboard.current;
-        if (keyboard == null)
-            return;
-
-        if (keyboard.wKey.isPressed) data.direction.z += 1f;
-        if (keyboard.sKey.isPressed) data.direction.z -= 1f;
-        if (keyboard.aKey.isPressed) data.direction.x -= 1f;
-        if (keyboard.dKey.isPressed) data.direction.x += 1f;
-
-
-        input.Set(data);
-    }
-    
-    
-    // unused callbacks
+    // ---------------------------
+    // Unused callbacks
+    // ---------------------------
+    public void OnInput(NetworkRunner runner, NetworkInput input) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
     public void OnConnectedToServer(NetworkRunner runner) { }
@@ -131,6 +96,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
-    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, System.ArraySegment<byte> data) { }
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
 }
