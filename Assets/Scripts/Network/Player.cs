@@ -5,34 +5,20 @@ public class Player : NetworkBehaviour
 {
     [Networked] public int Role { get; set; }
 
-    private Renderer _renderer;
-
-    private void Awake()
-    {
-        _renderer = GetComponentInChildren<Renderer>();
-    }
+    [SerializeField] private GameObject bodyMesh;
 
     public override void Spawned()
     {
-        // Color based on role (host vs client)
-        if (_renderer != null)
-        {
-            _renderer.material.color =
-                (Role == 0) ? Color.blue : Color.green;
-        }
+        // Hide own body
+        if (Object.HasInputAuthority && bodyMesh != null)
+            bodyMesh.SetActive(false);
 
-        // Optional: enable XR only for the local player
-        if (Object.HasInputAuthority == false)
+        // Color visible body for others
+        if (!Object.HasInputAuthority && bodyMesh != null)
         {
-            DisableLocalXR();
+            var r = bodyMesh.GetComponent<Renderer>();
+            if (r != null)
+                r.material.color = (Role == 0) ? Color.blue : Color.green;
         }
-    }
-
-    private void DisableLocalXR()
-    {
-        // Disable camera + XR input on remote players
-        var cameras = GetComponentsInChildren<Camera>();
-        foreach (var cam in cameras)
-            cam.enabled = false;
     }
 }
