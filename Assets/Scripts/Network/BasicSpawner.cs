@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
+using ParrelSync;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,14 +23,32 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         runner = gameObject.AddComponent<NetworkRunner>();
         runner.ProvideInput = false; // XR input handled locally
 
-        await runner.StartGame(new StartGameArgs
+        // Detect if this is a ParrelSync clone
+        bool isClone = ClonesManager.IsClone();
+
+        // Choose GameMode
+        GameMode mode = isClone ? GameMode.Client : GameMode.Shared;
+
+        StartGameArgs args = new StartGameArgs
         {
-            GameMode = GameMode.Shared,
+            GameMode = mode,
             SessionName = "VRRoom",
             Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
+        };
+        
+        if (isClone)
+        {
+            Debug.Log("ParrelSync clone detected: connecting as client to localhost.");
+        }
+        else
+        {
+            Debug.Log("Original editor detected: starting shared session as host.");
+        }
+
+        await runner.StartGame(args);
     }
+
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
