@@ -21,38 +21,33 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             mainUI.enabled = false;
 
         runner = gameObject.AddComponent<NetworkRunner>();
-        runner.ProvideInput = false; // XR input handled locally
+        runner.ProvideInput = false;
+        runner.AddCallbacks(this); //Callbacks registrieren
 
-        // Detect if this is a ParrelSync clone
         bool isClone = ClonesManager.IsClone();
 
-        // Choose GameMode
-        GameMode mode = isClone ? GameMode.Client : GameMode.Shared;
-
+        // Beide als Shared Mode
         StartGameArgs args = new StartGameArgs
         {
-            GameMode = mode,
+            GameMode = GameMode.Shared,
             SessionName = "VRRoom",
             Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         };
-        
-        if (isClone)
-        {
-            Debug.Log("ParrelSync clone detected: connecting as client to localhost.");
-        }
-        else
-        {
-            Debug.Log("Original editor detected: starting shared session as host.");
-        }
 
-        await runner.StartGame(args);
+        Debug.Log(isClone ? "Clone joining session..." : "Original starting session...");
+
+        var result = await runner.StartGame(args);
+    
+        if (result.Ok)
+            Debug.Log("Successfully connected!");
+        else
+            Debug.LogError($"Connection failed: {result.ShutdownReason}");
     }
 
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        // Spawn only for the local player
         if (player != runner.LocalPlayer) return;
 
         Transform spawn = GameObject.FindWithTag("Respawn")?.transform;
@@ -64,13 +59,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             player
         );
 
-        // Assign role: first local player = Therapist, others = Patient
         Player playerScript = obj.GetComponent<Player>();
-        playerScript.Role = (localPlayerCount == 0) ? 0 : 1;
+    
+        // erster Spieler = 0, zweiter = 1, usw.
+        playerScript.Role = (player.PlayerId == 0) ? 0 : 1;
 
-        localPlayerCount++;
-
-        Debug.Log($"Spawned local player. Role: {(playerScript.Role == 0 ? "Therapist" : "Patient")}");
+        Debug.Log($"Spawned player {player.PlayerId}. Role: {(playerScript.Role == 0 ? "Therapist" : "Patient")}");
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
