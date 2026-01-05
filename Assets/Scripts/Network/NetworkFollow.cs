@@ -19,7 +19,7 @@ public class NetworkFollow : NetworkBehaviour
         Debug.Log($"[NetworkFollow] {gameObject.name} now following {target.name}");
     }
 
-    void LateUpdate()
+    public override void FixedUpdateNetwork()
     {
         // Nur für lokalen Spieler
         if (!Object || !Object.HasInputAuthority) return;

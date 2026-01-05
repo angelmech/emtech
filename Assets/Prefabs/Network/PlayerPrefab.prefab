@@ -1603,7 +1603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d227aea077418aa673300765db94ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRBodyFollow
-  headFollowName: NetworkHead
+  head: {fileID: 1238425334610404562}
   bodyHeight: 1
   followRotation: 1
 --- !u!1 &3499590388232691612
