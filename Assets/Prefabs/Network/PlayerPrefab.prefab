@@ -1488,7 +1488,6 @@ GameObject:
   - component: {fileID: 8786244367279711380}
   - component: {fileID: 5188151380422671971}
   - component: {fileID: 5111821610418292133}
-  - component: {fileID: 345776186735865792}
   - component: {fileID: 7877793529681862804}
   m_Layer: 0
   m_Name: Body
@@ -1568,29 +1567,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &345776186735865792
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3172288985942691701}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7877793529681862804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1604,7 +1580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRBodyFollow
   head: {fileID: 1238425334610404562}
-  bodyHeight: 1
+  headToBodyDistance: 1.5
   followRotation: 1
 --- !u!1 &3499590388232691612
 GameObject:
@@ -2797,7 +2773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement.ContinuousMoveProvider
   m_Mediator: {fileID: 0}
   m_TransformationPriority: 0
-  m_MoveSpeed: 1
+  m_MoveSpeed: 1.5
   m_InAirControlModifier: 0.5
   m_EnableStrafe: 1
   m_EnableFly: 0
