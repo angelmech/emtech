@@ -1,24 +1,48 @@
 ﻿using Fusion;
 using UnityEngine;
+using System.Linq;
 
-public class Player : NetworkBehaviour
+namespace Network
 {
-    [Networked] public int Role { get; set; }
-
-    [SerializeField] private GameObject bodyMesh;
-
-    public override void Spawned()
+    public class Player : NetworkBehaviour
     {
-        // Hide own body
-        if (Object.HasInputAuthority && bodyMesh != null)
-            bodyMesh.SetActive(false);
+        [Networked] public NetworkBool IsTherapist { get; set; }
 
-        // Color visible body for others
-        if (!Object.HasInputAuthority && bodyMesh != null)
+        [SerializeField] private GameObject bodyMesh;
+        private MeshRenderer _renderer;
+
+        public override void Spawned()
         {
-            var r = bodyMesh.GetComponent<Renderer>();
-            if (r != null)
-                r.material.color = (Role == 0) ? Color.blue : Color.green;
+            _renderer = bodyMesh.GetComponent<MeshRenderer>();
+
+            if (Object.HasStateAuthority)
+            {
+                int smallestId = Runner.ActivePlayers.Min(p => p.PlayerId);
+                IsTherapist = Object.InputAuthority.PlayerId == smallestId;
+            }
+
+            UpdateVisuals();
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (Object.HasInputAuthority) return;
+            UpdateVisuals();
+        }
+
+        private void UpdateVisuals()
+        {
+            if (_renderer == null) return;
+
+            if (Object.HasInputAuthority)
+            {
+                _renderer.enabled = false;
+                return;
+            }
+
+            _renderer.enabled = true;
+            _renderer.material.color =
+                IsTherapist ? Color.blue : Color.green;
         }
     }
 }

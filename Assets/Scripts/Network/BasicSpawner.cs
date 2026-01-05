@@ -1,90 +1,82 @@
 ﻿using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
-using ParrelSync;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
+namespace Network
 {
-    [SerializeField] private NetworkPrefabRef playerPrefab;
-    [SerializeField] private Canvas mainUI;
-
-    private NetworkRunner runner;
-
-    // Local counter to track first player
-    private static int localPlayerCount = 0;
-
-    private async void Start()
+    public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
-        if (mainUI != null)
-            mainUI.enabled = false;
+        [SerializeField] private NetworkPrefabRef playerPrefab;
 
-        runner = gameObject.AddComponent<NetworkRunner>();
-        runner.ProvideInput = false;
-        runner.AddCallbacks(this); //Callbacks registrieren
+        [Header("Role Spawn Points")]
+        [SerializeField] private Transform therapistSpawnPoint;
+        [SerializeField] private Transform patientSpawnPoint;
 
-        bool isClone = ClonesManager.IsClone();
+        private NetworkRunner _runner;
 
-        // Beide als Shared Mode
-        StartGameArgs args = new StartGameArgs
+        private async void Start()
         {
-            GameMode = GameMode.Shared,
-            SessionName = "VRRoom",
-            Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        };
+            _runner = gameObject.AddComponent<NetworkRunner>();
+            _runner.AddCallbacks(this);
 
-        Debug.Log(isClone ? "Clone joining session..." : "Original starting session...");
+            StartGameArgs args = new StartGameArgs
+            {
+                GameMode = GameMode.Shared,
+                SessionName = "VRRoom",
+                Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            };
 
-        var result = await runner.StartGame(args);
-    
-        if (result.Ok)
-            Debug.Log("Successfully connected!");
-        else
-            Debug.LogError($"Connection failed: {result.ShutdownReason}");
+            await _runner.StartGame(args);
+        }
+
+        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        {
+            if (player != runner.LocalPlayer)
+                return;
+
+            // Kleinste PlayerId = Therapist
+            bool isTherapist = player.PlayerId == GetSmallestPlayerId(runner);
+
+            Transform spawn = isTherapist
+                ? therapistSpawnPoint
+                : patientSpawnPoint;
+
+            Vector3 pos = spawn ? spawn.position : Vector3.zero;
+            Quaternion rot = spawn ? spawn.rotation : Quaternion.identity;
+
+            runner.Spawn(playerPrefab, pos, rot, player);
+        }
+
+        private int GetSmallestPlayerId(NetworkRunner runner)
+        {
+            int smallest = int.MaxValue;
+            foreach (var p in runner.ActivePlayers)
+                if (p.PlayerId < smallest)
+                    smallest = p.PlayerId;
+            return smallest;
+        }
+
+        // --- unused callbacks ---
+        public void OnPlayerLeft(NetworkRunner r, PlayerRef p) { }
+        public void OnInput(NetworkRunner r, NetworkInput i) { }
+        public void OnShutdown(NetworkRunner r, ShutdownReason s) { }
+        public void OnConnectedToServer(NetworkRunner r) { }
+        public void OnDisconnectedFromServer(NetworkRunner r, NetDisconnectReason e) { }
+        public void OnConnectRequest(NetworkRunner r, NetworkRunnerCallbackArgs.ConnectRequest q, byte[] t) { }
+        public void OnConnectFailed(NetworkRunner r, NetAddress a, NetConnectFailedReason r2) { }
+        public void OnSessionListUpdated(NetworkRunner r, List<SessionInfo> l) { }
+        public void OnCustomAuthenticationResponse(NetworkRunner r, Dictionary<string, object> d) { }
+        public void OnHostMigration(NetworkRunner r, HostMigrationToken t) { }
+        public void OnInputMissing(NetworkRunner r, PlayerRef p, NetworkInput i) { }
+        public void OnObjectEnterAOI(NetworkRunner r, NetworkObject o, PlayerRef p) { }
+        public void OnObjectExitAOI(NetworkRunner r, NetworkObject o, PlayerRef p) { }
+        public void OnReliableDataProgress(NetworkRunner r, PlayerRef p, ReliableKey k, float pr) { }
+        public void OnReliableDataReceived(NetworkRunner r, PlayerRef p, ReliableKey k, System.ArraySegment<byte> d) { }
+        public void OnSceneLoadDone(NetworkRunner r) { }
+        public void OnSceneLoadStart(NetworkRunner r) { }
+        public void OnUserSimulationMessage(NetworkRunner r, SimulationMessagePtr m) { }
     }
-
-
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-    {
-        if (player != runner.LocalPlayer) return;
-
-        Transform spawn = GameObject.FindWithTag("Respawn")?.transform;
-
-        NetworkObject obj = runner.Spawn(
-            playerPrefab,
-            spawn ? spawn.position : Vector3.zero,
-            spawn ? spawn.rotation : Quaternion.identity,
-            player
-        );
-
-        Player playerScript = obj.GetComponent<Player>();
-    
-        // erster Spieler = 0, zweiter = 1, usw.
-        playerScript.Role = (player.PlayerId == 0) ? 0 : 1;
-
-        Debug.Log($"Spawned player {player.PlayerId}. Role: {(playerScript.Role == 0 ? "Therapist" : "Patient")}");
-    }
-
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
-
-    // Unused callbacks
-    public void OnInput(NetworkRunner r, NetworkInput i) { }
-    public void OnShutdown(NetworkRunner r, ShutdownReason s) { }
-    public void OnConnectedToServer(NetworkRunner r) { }
-    public void OnDisconnectedFromServer(NetworkRunner r, NetDisconnectReason e) { }
-    public void OnConnectRequest(NetworkRunner r, NetworkRunnerCallbackArgs.ConnectRequest q, byte[] t) { }
-    public void OnConnectFailed(NetworkRunner r, NetAddress a, NetConnectFailedReason r2) { }
-    public void OnSessionListUpdated(NetworkRunner r, List<SessionInfo> l) { }
-    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
-    public void OnHostMigration(NetworkRunner runner, HostMigrationToken token) { }
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
-    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
-    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, System.ArraySegment<byte> data) { }
-    public void OnSceneLoadDone(NetworkRunner runner) { }
-    public void OnSceneLoadStart(NetworkRunner runner) { }
-    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
 }
