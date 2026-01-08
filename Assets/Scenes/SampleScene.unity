@@ -1922,12 +1922,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1234322707}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 359.78, y: 74.625, z: 422.18}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.08999634, y: 13.645, z: 0.4199829}
   m_LocalScale: {x: 1, y: 2.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 699988169}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &1357102420
 GameObject:
@@ -2869,8 +2869,13 @@ PrefabInstance:
       value: Bridge
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4378779819930034039, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+    - {fileID: 8703288905266171703, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 477042858512556683, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1234322708}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1548603030557360998, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
       insertIndex: -1
@@ -2891,7 +2896,6 @@ SceneRoots:
   - {fileID: 2091915822}
   - {fileID: 1002387561}
   - {fileID: 1485696583}
-  - {fileID: 1234322708}
   - {fileID: 126264952}
   - {fileID: 1517378976}
   - {fileID: 1668353818}
