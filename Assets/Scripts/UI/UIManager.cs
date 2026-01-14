@@ -4,11 +4,8 @@ using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
-    
     public GameObject uiCanvas;
     public InputActionReference toggleReference;
-    
-    public Transform xrOrigin;
 
     private void OnEnable()
     {
@@ -17,7 +14,7 @@ public class UIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        toggleReference.action.performed += ToggleUI;
+        toggleReference.action.performed -= ToggleUI;
     }
 
     private void ToggleUI(InputAction.CallbackContext context)
@@ -37,16 +34,15 @@ public class UIManager : MonoBehaviour
     
     public void OnPlayButtonClicked()
     {
-        if (BridgeController.Instance != null && xrOrigin != null)
+        if (BridgeSpawner.Instance != null)
         {
-            Transform spawner = BridgeController.Instance.spawnerTransform;
-            
-            // Teleportiere den XR Origin
-            xrOrigin.position = spawner.position;
-            xrOrigin.rotation = spawner.rotation;
-
-            // UI nach Teleport schließen
+            Debug.Log("UIManager: Triggering teleport for all players");
+            BridgeSpawner.Instance.TriggerAllPlayerTeleport();
             uiCanvas.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("UIManager: sBridgeSpawner.Instance is null!");
         }
     }
 }
