@@ -29,53 +29,36 @@ public class BridgeSpawner : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_TeleportAll()
     {
-        // Find all NetworkObjects
-        NetworkObject[] allNetworkObjects = FindObjectsByType<NetworkObject>(
-            FindObjectsSortMode.None
-        );
+        // Finde das XR Origin in der Szene
+        Unity.XR.CoreUtils.XROrigin xrOrigin = FindObjectOfType<Unity.XR.CoreUtils.XROrigin>();
         
-        foreach (NetworkObject obj in allNetworkObjects)
+        if (xrOrigin == null)
         {
-            // Only teleport the local player
-            if (obj.HasInputAuthority)
-            {
-                Debug.Log($"Teleporting local player: {obj.name}");
-                
-                // Find XR Origin
-                Transform xrOrigin = obj.transform.Find("XR Origin (VR)");
-                
-                if (xrOrigin != null)
-                {
-                    // Disable CharacterController if present
-                    CharacterController cc = xrOrigin.GetComponent<CharacterController>();
-                    if (cc != null) cc.enabled = false;
-                    
-                    // Teleport
-                    xrOrigin.position = spawnerTransform.position;
-                    xrOrigin.rotation = spawnerTransform.rotation;
-                    
-                    // Re-enable CharacterController
-                    if (cc != null) cc.enabled = true;
-                    
-                    Debug.Log($"Teleported to {spawnerTransform.position}");
-                }
-                else
-                {
-                    Debug.LogError("XR Origin (VR) not found as child of player.");
-                }
-                
-                // Reset velocity
-                Rigidbody rb = obj.GetComponentInChildren<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.linearVelocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
-                }
-                
-                return;
-            }
+            Debug.LogError("XR Origin not found in scene!");
+            return;
         }
         
-        Debug.LogWarning("No local player found!");
+        Debug.Log($"Teleporting XR Origin to {spawnerTransform.position}");
+        
+        // Disable CharacterController if present
+        CharacterController cc = xrOrigin.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+        
+        // Teleport
+        xrOrigin.transform.position = spawnerTransform.position;
+        xrOrigin.transform.rotation = spawnerTransform.rotation;
+        
+        // Re-enable CharacterController
+        if (cc != null) cc.enabled = true;
+        
+        // Reset velocity on all Rigidbodies
+        Rigidbody[] rbs = xrOrigin.GetComponentsInChildren<Rigidbody>();
+        foreach (var rb in rbs)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+        
+        Debug.Log("Teleport complete");
     }
 }

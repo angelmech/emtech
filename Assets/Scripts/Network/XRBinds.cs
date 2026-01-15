@@ -14,9 +14,11 @@ public class XRBinds : NetworkBehaviour
     {
         Debug.Log($"[XRBinds] Spawned - HasInputAuthority: {Object.HasInputAuthority}");
 
+        xrOrigin = FindObjectOfType<XROrigin>();
+        
         if (xrOrigin == null)
         {
-            Debug.LogError("[XRBinds] XR Origin not assigned!");
+            Debug.LogError("[XRBinds] XR Origin not found in scene!");
             return;
         }
 
@@ -42,17 +44,7 @@ public class XRBinds : NetworkBehaviour
 
         if (!Object.HasInputAuthority)
         {
-            Debug.Log("[XRBinds] Remote player - disabling Camera and AudioListener");
-            
-            var cam = camera.GetComponent<Camera>();
-            var audioListener = camera.GetComponent<AudioListener>();
-            
-            if (cam != null) cam.enabled = false;
-            if (audioListener != null) audioListener.enabled = false;
-            
-            if (leftHand != null) leftHand.gameObject.SetActive(false);
-            if (rightHand != null) rightHand.gameObject.SetActive(false);
-            
+            Debug.Log("[XRBinds] Remote player - skipping XR setup");
             return;
         }
 
@@ -78,6 +70,9 @@ public class XRBinds : NetworkBehaviour
 
     private Transform FindController(string hand)
     {
+        
+        if (xrOrigin == null) return null;
+        
         string[] possiblePaths = new string[]
         {
             $"Camera Offset/{hand} Controller",

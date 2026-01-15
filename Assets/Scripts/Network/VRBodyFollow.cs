@@ -2,15 +2,22 @@
 
 public class VRBodyFollow : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private Transform head;
+    
+    [Header("Settings")]
     [SerializeField] private float headToBodyDistance = 1.5f;
     [SerializeField] private bool followRotation = true;
     
     void LateUpdate()
     {
-        if (head == null) return;
+        if (head == null) 
+        {
+            Debug.LogWarning("[VRBodyFollow] Head reference is missing!");
+            return;
+        }
 
-        // Body soll immer headToBodyDistance unter dem Kopf sein
+        // Body soll headToBodyDistance unter dem Kopf sein
         Vector3 targetPos = head.position;
         targetPos.y -= headToBodyDistance;
 
