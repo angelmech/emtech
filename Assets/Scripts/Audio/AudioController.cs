@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Fusion;
+using Unity.XR.CoreUtils;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class AudioController : MonoBehaviour
 {
@@ -32,16 +34,18 @@ public class AudioController : MonoBehaviour
 
     void Update()
     {
-        // Find XR camera once (Fusion-safe)
+        // Find XR camera once
         if (playerCameraTransform == null)
         {
-            var playerObj = GameObject.FindWithTag("Player");
-            if (playerObj == null) return;
-
-            var cam = playerObj.GetComponentInChildren<Camera>();
-            if (cam == null) return;
-
-            playerCameraTransform = cam.transform;
+            var xrOrigin = GameObject.FindObjectOfType<XROrigin>();
+            if (xrOrigin != null && xrOrigin.Camera != null)
+            {
+                playerCameraTransform = xrOrigin.Camera.transform;
+            }
+            else
+            {
+                return;
+            }
         }
 
         float playerHeightY = playerCameraTransform.position.y;
