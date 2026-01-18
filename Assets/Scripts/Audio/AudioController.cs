@@ -2,6 +2,7 @@
 using Fusion;
 using Unity.XR.CoreUtils;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
 public class AudioController : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class AudioController : MonoBehaviour
 
     [Header("Bridge Wind Audio")]
     public AudioSource[] bridgeWindAudios;
+
+    [Header("Relaxing Music")]
+    public AudioSource relaxingMusicSource;
 
     [Header("Player (XR Camera)")]
     public NetworkPrefabRef playerPrefab;
@@ -28,12 +32,35 @@ public class AudioController : MonoBehaviour
 
     public float bridgeWindMinVolume = 0f;
     public float bridgeWindMaxVolume = 0.5f;
+    public float relaxingMusicVolume = 0.7f;
 
     [Header("Smoothing")]
     public float volumeChangeSpeed = 2f;
+    public float musicFadeSpeed = 1f;
+
+    [Header("VR Input")]
+    public InputActionProperty toggleMusicAction;
+
+    private bool isRelaxingMusicMode = false;
+    private bool wasButtonPressed = false;
+
+    void Start()
+    {
+        // Setup relaxing music source
+        if (relaxingMusicSource != null)
+        {
+            relaxingMusicSource.loop = true;
+            relaxingMusicSource.volume = 0f;
+        }
+
+        // Enable the input action
+        toggleMusicAction.action?.Enable();
+    }
 
     void Update()
     {
+        HandleMusicToggle();
+
         // Find XR camera once
         if (playerCameraTransform == null)
         {
@@ -56,7 +83,7 @@ public class AudioController : MonoBehaviour
         );
 
         // ----- Ground ambient fades OUT as player goes UP -----
-        float targetGroundVolume = Mathf.Lerp(
+        float targetGroundVolume = isRelaxingMusicMode ? 0f : Mathf.Lerp(
             groundAmbientMaxVolume,
             groundAmbientMinVolume,
             heightT
@@ -66,7 +93,7 @@ public class AudioController : MonoBehaviour
         {
             if (audio == null) continue;
 
-            if (!audio.isPlaying)
+            if (!audio.isPlaying && !isRelaxingMusicMode)
                 audio.Play();
 
             audio.volume = Mathf.Lerp(
@@ -74,10 +101,14 @@ public class AudioController : MonoBehaviour
                 targetGroundVolume,
                 Time.deltaTime * volumeChangeSpeed
             );
+
+            // Stop audio if volume reaches zero in music mode
+            if (isRelaxingMusicMode && audio.volume < 0.01f && audio.isPlaying)
+                audio.Pause();
         }
 
         // ----- Bridge wind fades IN as player goes UP -----
-        float targetBridgeVolume = Mathf.Lerp(
+        float targetBridgeVolume = isRelaxingMusicMode ? 0f : Mathf.Lerp(
             bridgeWindMinVolume,
             bridgeWindMaxVolume,
             heightT
@@ -87,7 +118,7 @@ public class AudioController : MonoBehaviour
         {
             if (audio == null) continue;
 
-            if (!audio.isPlaying)
+            if (!audio.isPlaying && !isRelaxingMusicMode)
                 audio.Play();
 
             audio.volume = Mathf.Lerp(
@@ -97,7 +128,59 @@ public class AudioController : MonoBehaviour
             );
 
             // Optional realism
-            audio.pitch = 1f + heightT * 0.2f;
+            if (!isRelaxingMusicMode)
+                audio.pitch = 1f + heightT * 0.2f;
+
+            // Stop audio if volume reaches zero in music mode
+            if (isRelaxingMusicMode && audio.volume < 0.01f && audio.isPlaying)
+                audio.Pause();
         }
+
+        // Handle relaxing music fade
+        HandleRelaxingMusic();
+    }
+
+    void HandleMusicToggle()
+    {
+        bool isButtonDown = toggleMusicAction.action?.ReadValue<float>() > 0.5f;
+
+        // Detect button press (rising edge)
+        if (isButtonDown && !wasButtonPressed)
+        {
+            isRelaxingMusicMode = !isRelaxingMusicMode;
+        }
+
+        wasButtonPressed = isButtonDown;
+    }
+
+    void HandleRelaxingMusic()
+    {
+        if (relaxingMusicSource == null) return;
+
+        float targetMusicVolume = isRelaxingMusicMode ? relaxingMusicVolume : 0f;
+
+        // Start playing if entering music mode
+        if (isRelaxingMusicMode && !relaxingMusicSource.isPlaying)
+        {
+            relaxingMusicSource.Play();
+        }
+
+        // Fade volume
+        relaxingMusicSource.volume = Mathf.Lerp(
+            relaxingMusicSource.volume,
+            targetMusicVolume,
+            Time.deltaTime * musicFadeSpeed
+        );
+
+        // Stop if fully faded out
+        if (!isRelaxingMusicMode && relaxingMusicSource.volume < 0.01f && relaxingMusicSource.isPlaying)
+        {
+            relaxingMusicSource.Stop();
+        }
+    }
+
+    void OnDestroy()
+    {
+        toggleMusicAction.action?.Disable();
     }
 }
