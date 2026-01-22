@@ -35,6 +35,13 @@ public class UIManager : MonoBehaviour
 
     private void ToggleUI(InputAction.CallbackContext context)
     {
+        
+        if (!IsTherapist())
+        {
+            Debug.LogWarning("[UIManager] Only therapist can open UI");
+            return;
+        }
+        
         if (uiCanvas != null)
         {
             bool isActive = !uiCanvas.activeSelf;
@@ -47,6 +54,35 @@ public class UIManager : MonoBehaviour
             
             Debug.Log($"[UIManager] UI toggled to: {isActive}");
         }
+    }
+    
+    private bool IsTherapist()
+    {
+        Network.Player localPlayer = FindLocalPlayer();
+        
+        if (localPlayer == null)
+        {
+            Debug.LogWarning("[UIManager] Local player not found");
+            return false;
+        }
+
+        bool isTherapist = localPlayer.IsTherapist;
+        Debug.Log($"[UIManager] IsTherapist: {isTherapist}");
+        
+        return isTherapist;
+    }
+    
+    private Network.Player FindLocalPlayer()
+    {
+        Network.Player[] players = FindObjectsOfType<Network.Player>();
+        foreach (var player in players)
+        {
+            if (player.Object != null && player.Object.HasInputAuthority)
+            {
+                return player;
+            }
+        }
+        return null;
     }
 
     private void UpdateUIState()
@@ -146,7 +182,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void StartSession()
+    private void StartSession()
     {
         Debug.Log("[UIManager] Play button clicked - Starting session");
         
@@ -176,7 +212,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void EndSession()
+    private void EndSession()
     {
         Debug.Log("[UIManager] Play button clicked - Ending session");
         
