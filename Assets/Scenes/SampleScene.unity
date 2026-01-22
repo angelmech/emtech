@@ -4651,6 +4651,71 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1568857643}
   m_Mesh: {fileID: -2564423107879867638, guid: 147ae308eec018b40a7b312ae58f44c7, type: 3}
+--- !u!1 &1570381209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1570381211}
+  - component: {fileID: 1570381210}
+  m_Layer: 0
+  m_Name: PanicButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1570381210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570381209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc43d51e8953488a930ee08ee6103cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PanicButton
+  panicButtonAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Panic Button
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: fdc832f3-0b0b-40e4-bdf2-debaf5928756
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 02b9dfa8-2a7f-403a-9218-3fdad590dc90
+        m_Path: <XRController>{LeftHand}/primaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Panic Button
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  uiManager: {fileID: 2086958793}
+--- !u!4 &1570381211
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570381209}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 326.0574, y: 26.01837, z: 433.92728}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1600018637
 GameObject:
   m_ObjectHideFlags: 0
@@ -7585,3 +7650,4 @@ SceneRoots:
   - {fileID: 221096834}
   - {fileID: 2086958794}
   - {fileID: 1738318690}
+  - {fileID: 1570381211}
