@@ -229,7 +229,7 @@ MonoBehaviour:
   timerText: {fileID: 993349912}
   timerCanvas: {fileID: 18088250}
   offsetFromBridge: {x: 2, y: 2, z: 0}
-  alwaysFaceCamera: 0
+  alwaysFaceCamera: 1
 --- !u!223 &18088250
 Canvas:
   m_ObjectHideFlags: 0
@@ -1008,6 +1008,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   uiCanvas: {fileID: 1671922456}
   toggleReference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  playButton: {fileID: 0}
+  playButtonText: {fileID: 0}
+  bridgeSlider: {fileID: 0}
+  timerButtons: []
 --- !u!114 &221096827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1747,6 +1751,17 @@ MonoBehaviour:
   Components:
   - {fileID: 410087040}
   _guid: ec2ff2a5-6cf7-4a1f-
+--- !u!114 &430149218 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7407904916836087783, guid: c637a7108fae5f84c962b8f947b266e6, type: 3}
+  m_PrefabInstance: {fileID: 1671922455}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &495093173
 GameObject:
   m_ObjectHideFlags: 0
@@ -4639,6 +4654,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269308505}
   m_Mesh: {fileID: -8429650256770907399, guid: 147ae308eec018b40a7b312ae58f44c7, type: 3}
+--- !u!114 &1285796924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4862016013675059174, guid: c637a7108fae5f84c962b8f947b266e6, type: 3}
+  m_PrefabInstance: {fileID: 1671922455}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1357102420
 GameObject:
   m_ObjectHideFlags: 0
@@ -6883,6 +6909,17 @@ MonoBehaviour:
     m_InputActionReference: {fileID: 0}
     m_ObjectReferenceObject: {fileID: 0}
     m_ManualValue: 0
+--- !u!114 &1812756077 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4202994998058509531, guid: c637a7108fae5f84c962b8f947b266e6, type: 3}
+  m_PrefabInstance: {fileID: 1671922455}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1884882199
 GameObject:
   m_ObjectHideFlags: 0
@@ -8026,6 +8063,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   uiCanvas: {fileID: 1671922456}
   toggleReference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  playButton: {fileID: 1812756077}
+  playButtonText: {fileID: 1285796924}
+  bridgeSlider: {fileID: 430149218}
+  timerButtons: []
 --- !u!4 &2086958794
 Transform:
   m_ObjectHideFlags: 0
@@ -8321,6 +8362,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -23.77
       objectReference: {fileID: 0}
+    - target: {fileID: 3646828057627238410, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: spawnerTransformField
+      value: 
+      objectReference: {fileID: 1002387561}
+    - target: {fileID: 3646828057627238410, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: spawnerTransformBridge
+      value: 
+      objectReference: {fileID: 1234322708}
     - target: {fileID: 5154895447524549447, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
       propertyPath: SortKey
       value: 3585855008

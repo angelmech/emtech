@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -8,6 +9,13 @@ public class UIManager : MonoBehaviour
     public GameObject uiCanvas;
     public InputActionReference toggleReference;
     private float selectedTimerDuration = 1f;
+    private bool isSessionActive = false;
+
+    // UI Elements
+    public Button playButton;
+    public TextMeshProUGUI playButtonText;
+    public Slider bridgeSlider;
+    public Button[] timerButtons;
 
     private void OnEnable()
     {
@@ -31,12 +39,48 @@ public class UIManager : MonoBehaviour
         {
             bool isActive = !uiCanvas.activeSelf;
             uiCanvas.SetActive(isActive);
+            
+            if (isActive)
+            {
+                UpdateUIState();
+            }
+            
             Debug.Log($"[UIManager] UI toggled to: {isActive}");
+        }
+    }
+
+    private void UpdateUIState()
+    {
+        if (isSessionActive)
+        {
+            // Session läuft: End Session anzeigen
+            playButtonText.text = "End Session";
+            
+            // Alle Controls deaktivieren
+            bridgeSlider.interactable = false;
+            foreach (Button btn in timerButtons)
+            {
+                btn.interactable = false;
+            }
+        }
+        else
+        {
+            // Session nicht aktiv: Play anzeigen
+            playButtonText.text = "Start Session";
+            
+            // Alle Controls aktivieren
+            bridgeSlider.interactable = true;
+            foreach (Button btn in timerButtons)
+            {
+                btn.interactable = true;
+            }
         }
     }
     
     public void OnBridgeSliderChanged(float value)
     {
+        if (isSessionActive) return; // Während Session nichts ändern
+        
         Debug.Log($"[UIManager] Slider changed to: {value}");
         
         if (BridgeController.Instance != null)
@@ -52,6 +96,8 @@ public class UIManager : MonoBehaviour
     // timer methods
     public void OnTimerButtonClicked(float minutes)
     {
+        if (isSessionActive) return; // Während Session nichts ändern
+        
         selectedTimerDuration = minutes;
 
         // Set the timer
@@ -77,6 +123,8 @@ public class UIManager : MonoBehaviour
 
     public void SetTimerDuration(float minutes)
     {
+        if (isSessionActive) return;
+        
         selectedTimerDuration = minutes;
         Debug.Log($"[UIManager] Timer set to {minutes} minutes");
 
@@ -88,9 +136,22 @@ public class UIManager : MonoBehaviour
     
     public void OnPlayButtonClicked()
     {
-        Debug.Log("[UIManager] Play button clicked");
+        if (isSessionActive)
+        {
+            EndSession();
+        }
+        else
+        {
+            StartSession();
+        }
+    }
+
+    public void StartSession()
+    {
+        Debug.Log("[UIManager] Play button clicked - Starting session");
         
-        // Start the timer
+        isSessionActive = true;
+        
         if (Timer.Instance != null)
         {
             Timer.Instance.StartTimer();
@@ -102,7 +163,7 @@ public class UIManager : MonoBehaviour
         
         if (BridgeSpawner.Instance != null)
         {
-            BridgeSpawner.Instance.TriggerAllPlayerTeleport();
+            BridgeSpawner.Instance.TriggerAllPlayerTeleportBridge();
             
             if (uiCanvas != null)
             {
@@ -113,5 +174,29 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError("[UIManager] BridgeSpawner.Instance is null!");
         }
+    }
+
+    public void EndSession()
+    {
+        Debug.Log("[UIManager] Play button clicked - Ending session");
+        
+        isSessionActive = false;
+        
+        if (Timer.Instance != null)
+        {
+            Timer.Instance.StopTimer();
+        }
+        
+        if (BridgeSpawner.Instance != null)
+        {
+            BridgeSpawner.Instance.TriggerAllPlayerTeleportField();
+        }
+        else
+        {
+            Debug.LogError("[UIManager] BridgeSpawner.Instance is null!");
+        }
+        
+        // UI bleibt offen nach End Session
+        UpdateUIState();
     }
 }

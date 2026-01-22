@@ -5,7 +5,9 @@ public class BridgeSpawner : NetworkBehaviour
 {
     public static BridgeSpawner Instance;
     
-    public Transform spawnerTransform;
+    public Transform spawnerTransformBridge;
+    public Transform spawnerTransformField;
+
     
     void Awake()
     {
@@ -15,7 +17,7 @@ public class BridgeSpawner : NetworkBehaviour
         }
     }
     
-    public void TriggerAllPlayerTeleport()
+    public void TriggerAllPlayerTeleportBridge()
     {
         if (Object == null || !Object.HasStateAuthority)
         {
@@ -23,11 +25,22 @@ public class BridgeSpawner : NetworkBehaviour
             return;
         }
         
-        RPC_TeleportAll();
+        RPC_TeleportAll(spawnerTransformBridge.position, spawnerTransformBridge.rotation);
+    }
+    
+    public void TriggerAllPlayerTeleportField()
+    {
+        if (Object == null || !Object.HasStateAuthority)
+        {
+            Debug.LogWarning("Cannot trigger teleport: no state authority");
+            return;
+        }
+        
+        RPC_TeleportAll(spawnerTransformField.position, spawnerTransformField.rotation);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_TeleportAll()
+    public void RPC_TeleportAll(Vector3 targetPos, Quaternion targetRot)
     {
         // Finde das XR Origin in der Szene
         Unity.XR.CoreUtils.XROrigin xrOrigin = FindObjectOfType<Unity.XR.CoreUtils.XROrigin>();
@@ -38,15 +51,15 @@ public class BridgeSpawner : NetworkBehaviour
             return;
         }
         
-        Debug.Log($"Teleporting XR Origin to {spawnerTransform.position}");
+        Debug.Log($"Teleporting XR Origin to {targetPos}");
         
         // Disable CharacterController if present
         CharacterController cc = xrOrigin.GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
         
         // Teleport
-        xrOrigin.transform.position = spawnerTransform.position;
-        xrOrigin.transform.rotation = spawnerTransform.rotation;
+        xrOrigin.transform.position = targetPos;
+        xrOrigin.transform.rotation = targetRot;
         
         // Re-enable CharacterController
         if (cc != null) cc.enabled = true;

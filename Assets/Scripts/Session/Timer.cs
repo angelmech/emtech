@@ -30,7 +30,7 @@ public class Timer : NetworkBehaviour
         // Position the canvas next to the bridge
         if (BridgeSpawner.Instance != null && timerCanvas != null)
         {
-            timerCanvas.transform.position = BridgeSpawner.Instance.spawnerTransform.position + offsetFromBridge;
+            timerCanvas.transform.position = BridgeSpawner.Instance.spawnerTransformBridge.position + offsetFromBridge;
         }
         
         if (Instance == null)
