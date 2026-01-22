@@ -28,9 +28,9 @@ public class Timer : NetworkBehaviour
     public override void Spawned()
     {
         // Position the canvas next to the bridge
-        if (BridgeSpawner.Instance != null && timerCanvas != null)
+        if (SpawnerScript.Instance != null && timerCanvas != null)
         {
-            timerCanvas.transform.position = BridgeSpawner.Instance.spawnerTransformBridge.position + offsetFromBridge;
+            timerCanvas.transform.position = SpawnerScript.Instance.spawnerTransformBridge.position + offsetFromBridge;
         }
         
         if (Instance == null)

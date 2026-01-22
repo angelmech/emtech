@@ -161,9 +161,9 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("[UIManager] Timer.Instance is null!");
         }
         
-        if (BridgeSpawner.Instance != null)
+        if (SpawnerScript.Instance != null)
         {
-            BridgeSpawner.Instance.TriggerAllPlayerTeleportBridge();
+            SpawnerScript.Instance.TriggerAllPlayerTeleportBridge();
             
             if (uiCanvas != null)
             {
@@ -172,7 +172,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[UIManager] BridgeSpawner.Instance is null!");
+            Debug.LogError("[UIManager] SpawnerScript.Instance is null!");
         }
     }
 
@@ -187,13 +187,13 @@ public class UIManager : MonoBehaviour
             Timer.Instance.StopTimer();
         }
         
-        if (BridgeSpawner.Instance != null)
+        if (SpawnerScript.Instance != null)
         {
-            BridgeSpawner.Instance.TriggerAllPlayerTeleportField();
+            SpawnerScript.Instance.TriggerAllPlayerTeleportField();
         }
         else
         {
-            Debug.LogError("[UIManager] BridgeSpawner.Instance is null!");
+            Debug.LogError("[UIManager] SpawnerScript.Instance is null!");
         }
         
         // UI bleibt offen nach End Session

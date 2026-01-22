@@ -1,9 +1,9 @@
 using Fusion;
 using UnityEngine;
 
-public class BridgeSpawner : NetworkBehaviour
+public class SpawnerScript : NetworkBehaviour
 {
-    public static BridgeSpawner Instance;
+    public static SpawnerScript Instance;
     
     public Transform spawnerTransformBridge;
     public Transform spawnerTransformField;

@@ -3628,7 +3628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1002387561}
   m_Layer: 0
-  m_Name: Spawn1
+  m_Name: SpawnField
   m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4829,37 +4829,6 @@ Transform:
   - {fileID: 842702964}
   m_Father: {fileID: 1992146158}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1485696582
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1485696583}
-  m_Layer: 0
-  m_Name: Spawn2
-  m_TagString: Respawn
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1485696583
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485696582}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 283.77, y: 20.062, z: 387.1}
-  m_LocalScale: {x: 1, y: 2.6, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1517378973
 GameObject:
   m_ObjectHideFlags: 0
@@ -5982,6 +5951,72 @@ Transform:
   - {fileID: 1568857644}
   - {fileID: 34548373}
   m_Father: {fileID: 235477846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1738318687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1738318690}
+  - component: {fileID: 1738318689}
+  - component: {fileID: 1738318688}
+  m_Layer: 0
+  m_Name: BridgeSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1738318688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738318687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 3863207903
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1738318689}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &1738318689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738318687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c90cf7c1184ff56428347092793151ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BridgeSpawner
+  spawnerTransformBridge: {fileID: 1234322708}
+  spawnerTransformField: {fileID: 1002387561}
+--- !u!4 &1738318690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738318687}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 283.77, y: 20.062, z: 387.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1743601104
 GameObject:
@@ -8114,7 +8149,7 @@ MonoBehaviour:
   playerPrefab:
     RawGuidValue: c4fcff7d850c8034b990a55b6386583f
   therapistSpawnPoint: {fileID: 1234322708}
-  patientSpawnPoint: {fileID: 1485696583}
+  patientSpawnPoint: {fileID: 0}
 --- !u!4 &2091915822
 Transform:
   m_ObjectHideFlags: 0
@@ -8376,13 +8411,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5154895447524549447, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5154895447524549447, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[1]'
+      value: 
+      objectReference: {fileID: 18088249}
     - target: {fileID: 5154895447524549447, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[2]'
       value: 
       objectReference: {fileID: 18088249}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3646828057627238410, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 477042858512556683, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
@@ -8406,7 +8446,6 @@ SceneRoots:
   - {fileID: 2018287784}
   - {fileID: 2091915822}
   - {fileID: 1002387561}
-  - {fileID: 1485696583}
   - {fileID: 126264952}
   - {fileID: 1517378976}
   - {fileID: 1668353818}
@@ -8422,3 +8461,4 @@ SceneRoots:
   - {fileID: 121925019}
   - {fileID: 221096834}
   - {fileID: 2086958794}
+  - {fileID: 1738318690}
