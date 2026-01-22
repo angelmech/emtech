@@ -24,6 +24,8 @@ public class Timer : NetworkBehaviour
     private float localDuration = 0f;
     private bool localIsCountdown = false;
     
+    private bool hasFinished = false;
+
     
     public override void Spawned()
     {
@@ -75,6 +77,7 @@ public class Timer : NetworkBehaviour
     
     public void StartTimer()
     {
+        hasFinished = false;
         if (Object != null && Object.HasStateAuthority)
         {
             NetworkStartTime = (float)Runner.SimulationTime;
@@ -110,6 +113,8 @@ public class Timer : NetworkBehaviour
     
     private void UpdateTimerDisplay()
     {
+        if (hasFinished) return;
+        
         if (timerText == null) return;
         
         float elapsedTime = GetElapsedTime();
@@ -125,10 +130,11 @@ public class Timer : NetworkBehaviour
             displayTime = Mathf.Max(0, duration - elapsedTime);
             
             // Check if time's up
-            if (displayTime <= 0)
+            if (displayTime <= 0 && !hasFinished)
             {
-                timerText.color = Color.red;
-                timerText.text = "TIME'S UP!";
+                hasFinished = true;
+                timerText.color = Color.green;
+                timerText.text = "Great job!";
                 StopTimer();
                 return;
             }
