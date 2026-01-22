@@ -3036,7 +3036,7 @@ Transform:
   m_GameObject: {fileID: 1002387560}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 292.1123, y: 20.52, z: 385.17676}
+  m_LocalPosition: {x: 292.1123, y: 22.21, z: 385.17676}
   m_LocalScale: {x: 1, y: 2.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7651,6 +7651,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7238709
+      objectReference: {fileID: 0}
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.68993556
+      objectReference: {fileID: 0}
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 74664569783400698, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 272.75
+      objectReference: {fileID: 0}
     - target: {fileID: 477042858512556683, guid: 3d0a688bccb085c4aadf7c593232468f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 359.69
