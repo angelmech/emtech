@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Simple script to make the body follow the head in VR.
+/// </summary>
 public class VRBodyFollow : MonoBehaviour
 {
     [Header("References")]
@@ -17,7 +20,7 @@ public class VRBodyFollow : MonoBehaviour
             return;
         }
 
-        // Body soll headToBodyDistance unter dem Kopf sein
+        // Body position is head position minus a fixed distance on the Y axis
         Vector3 targetPos = head.position;
         targetPos.y -= headToBodyDistance;
 

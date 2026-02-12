@@ -2,6 +2,9 @@
 using TMPro;
 using Fusion;
 
+/// <summary>
+/// Manages a timer that can count up or down, synchronized across the network. Displays time in MM:SS:MS format and provides visual feedback as time runs out.
+/// </summary>
 public class Timer : NetworkBehaviour
 {
     public static Timer Instance;

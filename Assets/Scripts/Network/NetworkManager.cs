@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 
 namespace Network
 {
-    public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
+    /// <summary>
+    /// Manages the network session, player spawning, and role assignment using Fusion.
+    /// </summary>
+    public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         [SerializeField] private NetworkPrefabRef playerPrefab;
 

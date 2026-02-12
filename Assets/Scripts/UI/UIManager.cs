@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the UI interactions for the therapist, including session control and settings adjustments.
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     public GameObject uiCanvas;
@@ -89,10 +92,9 @@ public class UIManager : MonoBehaviour
     {
         if (isSessionActive)
         {
-            // Session läuft: End Session anzeigen
             playButtonText.text = "End Session";
             
-            // Alle Controls deaktivieren
+            // deactivate controls
             bridgeSlider.interactable = false;
             foreach (Button btn in timerButtons)
             {
@@ -101,10 +103,9 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            // Session nicht aktiv: Play anzeigen
             playButtonText.text = "Start Session";
             
-            // Alle Controls aktivieren
+            // activate controls
             bridgeSlider.interactable = true;
             foreach (Button btn in timerButtons)
             {
@@ -115,7 +116,7 @@ public class UIManager : MonoBehaviour
     
     public void OnBridgeSliderChanged(float value)
     {
-        if (isSessionActive) return; // Während Session nichts ändern
+        if (isSessionActive) return; // settings not changeable during session
         
         Debug.Log($"[UIManager] Slider changed to: {value}");
         
@@ -132,7 +133,7 @@ public class UIManager : MonoBehaviour
     // timer methods
     public void OnTimerButtonClicked(float minutes)
     {
-        if (isSessionActive) return; // Während Session nichts ändern
+        if (isSessionActive) return;  // settings not changeable during session
         
         selectedTimerDuration = minutes;
 
@@ -144,12 +145,12 @@ public class UIManager : MonoBehaviour
         Button clicked = EventSystem.current.currentSelectedGameObject?.GetComponent<Button>();
         if (clicked == null) return;
 
-        // Reset all sibling buttons' colors
+        // Reset all sibling buttons colors
         foreach (Transform sibling in clicked.transform.parent)
         {
             Button b = sibling.GetComponent<Button>();
             if (b != null)
-                b.image.color = b.colors.normalColor; // back to normal
+                b.image.color = b.colors.normalColor;
         }
 
         // Darken the clicked button slightly
@@ -232,7 +233,7 @@ public class UIManager : MonoBehaviour
             Debug.LogError("[UIManager] SpawnerScript.Instance is null!");
         }
         
-        // UI bleibt offen nach End Session
+        // UI remains open after ending session
         UpdateUIState();
     }
 }

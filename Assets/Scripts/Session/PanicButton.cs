@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Listens for a specific VR input (e.g., Left Controller Primary Button) to trigger an immediate end to the session, acting as a "panic button".
+/// </summary>
 public class PanicButton : MonoBehaviour
 {
     [Header("VR Input")]
@@ -17,7 +20,7 @@ public class PanicButton : MonoBehaviour
         // Enable the input action
         panicButtonAction.action?.Enable();
 
-        // Try to find UIManager if not assigned
+        // find UIManager if not assigned
         if (uiManager == null)
         {
             uiManager = FindObjectOfType<UIManager>();
@@ -36,8 +39,7 @@ public class PanicButton : MonoBehaviour
     void HandlePanicButton()
     {
         bool isButtonDown = panicButtonAction.action?.ReadValue<float>() > 0.5f;
-
-        // Detect button press (rising edge)
+        
         if (isButtonDown && !wasButtonPressed)
         {
             TriggerPanic();
@@ -52,8 +54,7 @@ public class PanicButton : MonoBehaviour
 
         if (uiManager != null)
         {
-            // Call the private EndSession method via the public OnPlayButtonClicked
-            // check if session is active first
+            // Calls private EndSession method, checks if session is active first
             if (uiManager.GetType().GetField("isSessionActive", 
                 System.Reflection.BindingFlags.NonPublic | 
                 System.Reflection.BindingFlags.Instance)?.GetValue(uiManager) is bool isActive)

@@ -4,6 +4,9 @@ using Unity.XR.CoreUtils;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Manages all audio sources in the scene, adjusting their volumes based on the player's height and mode.
+/// </summary>
 public class AudioController : MonoBehaviour
 {
     [Header("Ground Ambient Audio (Birds, Forest Wind)")]
@@ -82,7 +85,7 @@ public class AudioController : MonoBehaviour
             (playerHeightY - groundLevelY) / (bridgeLevelY - groundLevelY)
         );
 
-        // ----- Ground ambient fades OUT as player goes UP -----
+        // Ground ambient fades OUT as player goes UP
         float targetGroundVolume = isRelaxingMusicMode ? 0f : Mathf.Lerp(
             groundAmbientMaxVolume,
             groundAmbientMinVolume,
@@ -107,7 +110,7 @@ public class AudioController : MonoBehaviour
                 audio.Pause();
         }
 
-        // ----- Bridge wind fades IN as player goes UP -----
+        // Bridge wind fades IN as player goes UP
         float targetBridgeVolume = isRelaxingMusicMode ? 0f : Mathf.Lerp(
             bridgeWindMinVolume,
             bridgeWindMaxVolume,
@@ -126,8 +129,7 @@ public class AudioController : MonoBehaviour
                 targetBridgeVolume,
                 Time.deltaTime * volumeChangeSpeed
             );
-
-            // Optional realism
+            
             if (!isRelaxingMusicMode)
                 audio.pitch = 1f + heightT * 0.2f;
 
@@ -143,8 +145,7 @@ public class AudioController : MonoBehaviour
     void HandleMusicToggle()
     {
         bool isButtonDown = toggleMusicAction.action?.ReadValue<float>() > 0.5f;
-
-        // Detect button press (rising edge)
+        
         if (isButtonDown && !wasButtonPressed)
         {
             isRelaxingMusicMode = !isRelaxingMusicMode;

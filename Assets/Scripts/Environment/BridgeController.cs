@@ -1,6 +1,9 @@
 using UnityEngine;
 using Fusion;
 
+/// <summary>
+/// Manages the bridge's height and related player spawn points.
+/// </summary>
 public class BridgeController : NetworkBehaviour
 {
     public static BridgeController Instance;
@@ -8,13 +11,11 @@ public class BridgeController : NetworkBehaviour
     public Transform bridgeTransform;
     public Transform spawnerTransform;
     
-    // Variable wird autamtisch über Netzwerk synchronisiert
     [Networked, OnChangedRender(nameof(OnHeightChanged))]
     public float NetworkedHeightStep { get; set; }
     
     void Awake()
     {
-        // Brücke registriert sich selbst
         Instance = this;
     }
     

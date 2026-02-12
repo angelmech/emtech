@@ -1,6 +1,9 @@
 using Fusion;
 using UnityEngine;
 
+/// <summary>
+/// Simple script to manage player teleportation to predefined spawn points.
+/// </summary>
 public class SpawnerScript : NetworkBehaviour
 {
     public static SpawnerScript Instance;
@@ -42,7 +45,6 @@ public class SpawnerScript : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_TeleportAll(Vector3 targetPos, Quaternion targetRot)
     {
-        // Finde das XR Origin in der Szene
         Unity.XR.CoreUtils.XROrigin xrOrigin = FindObjectOfType<Unity.XR.CoreUtils.XROrigin>();
         
         if (xrOrigin == null)
@@ -53,12 +55,11 @@ public class SpawnerScript : NetworkBehaviour
         
         Debug.Log($"Teleporting player to {targetPos}");
         
-        // Disable CharacterController if present (wichtig!)
+        // Disable CharacterController if present!
         CharacterController cc = xrOrigin.GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
         
-        // Use XR Origin's built-in MatchOriginUp method to properly teleport
-        // This handles camera offset automatically
+        // Uses XR Origin's built-in method to properly teleport
         xrOrigin.MoveCameraToWorldLocation(targetPos);
         
         // Set rotation separately
