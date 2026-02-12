@@ -6725,7 +6725,7 @@ GameObject:
   - component: {fileID: 2091915822}
   - component: {fileID: 2091915821}
   m_Layer: 0
-  m_Name: BasicSpawner
+  m_Name: NetworkManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
