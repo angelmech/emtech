@@ -1,82 +1,84 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Listens for a specific VR input (e.g., Left Controller Primary Button) to trigger an immediate end to the session, acting as a "panic button".
-/// </summary>
-public class PanicButton : MonoBehaviour
+namespace Session
 {
-    [Header("VR Input")]
-    [Tooltip("Map this to Left Controller Primary Button")]
-    public InputActionProperty panicButtonAction;
-
-    [Header("References")]
-    public UIManager uiManager;
-
-    private bool wasButtonPressed = false;
-
-    void Start()
+    /// <summary>
+    /// Listens for a specific VR input (e.g., Left Controller Primary Button) to trigger an immediate end to the session, acting as a "panic button".
+    /// </summary>
+    public class PanicButton : MonoBehaviour
     {
-        // Enable the input action
-        panicButtonAction.action?.Enable();
+        [Header("VR Input")] [Tooltip("Map this to Left Controller Primary Button")]
+        public InputActionProperty panicButtonAction;
 
-        // find UIManager if not assigned
-        if (uiManager == null)
+        [Header("References")] public UIManager uiManager;
+
+        private bool wasButtonPressed = false;
+
+        void Start()
         {
-            uiManager = FindObjectOfType<UIManager>();
+            // Enable the input action
+            panicButtonAction.action?.Enable();
+
+            // find UIManager if not assigned
             if (uiManager == null)
             {
-                Debug.LogError("[PanicButton] UIManager not found in scene!");
+                uiManager = FindObjectOfType<UIManager>();
+                if (uiManager == null)
+                {
+                    Debug.LogError("[PanicButton] UIManager not found in scene!");
+                }
             }
         }
-    }
 
-    void Update()
-    {
-        HandlePanicButton();
-    }
-
-    void HandlePanicButton()
-    {
-        bool isButtonDown = panicButtonAction.action?.ReadValue<float>() > 0.5f;
-        
-        if (isButtonDown && !wasButtonPressed)
+        void Update()
         {
-            TriggerPanic();
+            HandlePanicButton();
         }
 
-        wasButtonPressed = isButtonDown;
-    }
-
-    void TriggerPanic()
-    {
-        Debug.Log("[PanicButton] PANIC BUTTON PRESSED - Ending session!");
-
-        if (uiManager != null)
+        void HandlePanicButton()
         {
-            // Calls private EndSession method, checks if session is active first
-            if (uiManager.GetType().GetField("isSessionActive", 
-                System.Reflection.BindingFlags.NonPublic | 
-                System.Reflection.BindingFlags.Instance)?.GetValue(uiManager) is bool isActive)
+            bool isButtonDown = panicButtonAction.action?.ReadValue<float>() > 0.5f;
+
+            if (isButtonDown && !wasButtonPressed)
             {
-                if (isActive)
+                TriggerPanic();
+            }
+
+            wasButtonPressed = isButtonDown;
+        }
+
+        void TriggerPanic()
+        {
+            Debug.Log("[PanicButton] PANIC BUTTON PRESSED - Ending session!");
+
+            if (uiManager != null)
+            {
+                // Calls private EndSession method, checks if session is active first
+                if (uiManager.GetType().GetField("isSessionActive",
+                        System.Reflection.BindingFlags.NonPublic |
+                        System.Reflection.BindingFlags.Instance)?.GetValue(uiManager) is bool isActive)
                 {
-                    uiManager.OnPlayButtonClicked();
-                }
-                else
-                {
-                    Debug.LogWarning("[PanicButton] Session is not active, nothing to end.");
+                    if (isActive)
+                    {
+                        uiManager.OnPlayButtonClicked();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[PanicButton] Session is not active, nothing to end.");
+                    }
                 }
             }
+            else
+            {
+                Debug.LogError("[PanicButton] UIManager reference is null!");
+            }
         }
-        else
-        {
-            Debug.LogError("[PanicButton] UIManager reference is null!");
-        }
-    }
 
-    void OnDestroy()
-    {
-        panicButtonAction.action?.Disable();
+        void OnDestroy()
+        {
+            panicButtonAction.action?.Disable();
+        }
     }
 }

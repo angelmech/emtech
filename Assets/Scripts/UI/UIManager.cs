@@ -1,239 +1,245 @@
+using Environment;
+using Session;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-/// <summary>
-/// Manages the UI interactions for the therapist, including session control and settings adjustments.
-/// </summary>
-public class UIManager : MonoBehaviour
+namespace UI
 {
-    public GameObject uiCanvas;
-    public InputActionReference toggleReference;
-    private float selectedTimerDuration = 1f;
-    private bool isSessionActive = false;
-
-    // UI Elements
-    public Button playButton;
-    public TextMeshProUGUI playButtonText;
-    public Slider bridgeSlider;
-    public Button[] timerButtons;
-
-    private void OnEnable()
+    /// <summary>
+    /// Manages the UI interactions for the therapist, including session control and settings adjustments.
+    /// </summary>
+    public class UIManager : MonoBehaviour
     {
-        if (toggleReference?.action != null)
-        {
-            toggleReference.action.performed += ToggleUI;
-        }
-    }
+        public GameObject uiCanvas;
+        public InputActionReference toggleReference;
+        private float selectedTimerDuration = 1f;
+        private bool isSessionActive = false;
 
-    private void OnDisable()
-    {
-        if (toggleReference?.action != null)
-        {
-            toggleReference.action.performed -= ToggleUI;
-        }
-    }
+        // UI Elements
+        public Button playButton;
+        public TextMeshProUGUI playButtonText;
+        public Slider bridgeSlider;
+        public Button[] timerButtons;
 
-    private void ToggleUI(InputAction.CallbackContext context)
-    {
-        
-        if (!IsTherapist())
+        private void OnEnable()
         {
-            Debug.LogWarning("[UIManager] Only therapist can open UI");
-            return;
-        }
-        
-        if (uiCanvas != null)
-        {
-            bool isActive = !uiCanvas.activeSelf;
-            uiCanvas.SetActive(isActive);
-            
-            if (isActive)
+            if (toggleReference?.action != null)
             {
-                UpdateUIState();
-            }
-            
-            Debug.Log($"[UIManager] UI toggled to: {isActive}");
-        }
-    }
-    
-    private bool IsTherapist()
-    {
-        Network.Player localPlayer = FindLocalPlayer();
-        
-        if (localPlayer == null)
-        {
-            Debug.LogWarning("[UIManager] Local player not found");
-            return false;
-        }
-
-        bool isTherapist = localPlayer.IsTherapist;
-        Debug.Log($"[UIManager] IsTherapist: {isTherapist}");
-        
-        return isTherapist;
-    }
-    
-    private Network.Player FindLocalPlayer()
-    {
-        Network.Player[] players = FindObjectsOfType<Network.Player>();
-        foreach (var player in players)
-        {
-            if (player.Object != null && player.Object.HasInputAuthority)
-            {
-                return player;
+                toggleReference.action.performed += ToggleUI;
             }
         }
-        return null;
-    }
 
-    private void UpdateUIState()
-    {
-        if (isSessionActive)
+        private void OnDisable()
         {
-            playButtonText.text = "End Session";
-            
-            // deactivate controls
-            bridgeSlider.interactable = false;
-            foreach (Button btn in timerButtons)
+            if (toggleReference?.action != null)
             {
-                btn.interactable = false;
+                toggleReference.action.performed -= ToggleUI;
             }
         }
-        else
+
+        private void ToggleUI(InputAction.CallbackContext context)
         {
-            playButtonText.text = "Start Session";
-            
-            // activate controls
-            bridgeSlider.interactable = true;
-            foreach (Button btn in timerButtons)
+
+            if (!IsTherapist())
             {
-                btn.interactable = true;
+                Debug.LogWarning("[UIManager] Only therapist can open UI");
+                return;
             }
-        }
-    }
-    
-    public void OnBridgeSliderChanged(float value)
-    {
-        if (isSessionActive) return; // settings not changeable during session
-        
-        Debug.Log($"[UIManager] Slider changed to: {value}");
-        
-        if (BridgeController.Instance != null)
-        {
-            BridgeController.Instance.UpdateHeight(value);
-        }
-        else
-        {
-            Debug.LogError("[UIManager] BridgeController.Instance is null!");
-        }
-    }
-    
-    // timer methods
-    public void OnTimerButtonClicked(float minutes)
-    {
-        if (isSessionActive) return;  // settings not changeable during session
-        
-        selectedTimerDuration = minutes;
 
-        // Set the timer
-        if (Timer.Instance != null)
-            Timer.Instance.SetTimerDuration(minutes);
-
-        // Get the clicked button automatically
-        Button clicked = EventSystem.current.currentSelectedGameObject?.GetComponent<Button>();
-        if (clicked == null) return;
-
-        // Reset all sibling buttons colors
-        foreach (Transform sibling in clicked.transform.parent)
-        {
-            Button b = sibling.GetComponent<Button>();
-            if (b != null)
-                b.image.color = b.colors.normalColor;
-        }
-
-        // Darken the clicked button slightly
-        Color c = clicked.image.color;
-        clicked.image.color = new Color(c.r * 0.7f, c.g * 0.7f, c.b * 0.7f, c.a);
-    }
-
-    public void SetTimerDuration(float minutes)
-    {
-        if (isSessionActive) return;
-        
-        selectedTimerDuration = minutes;
-        Debug.Log($"[UIManager] Timer set to {minutes} minutes");
-
-        if (Timer.Instance != null)
-        {
-            Timer.Instance.SetTimerDuration(minutes);
-        }
-    }
-    
-    public void OnPlayButtonClicked()
-    {
-        if (isSessionActive)
-        {
-            EndSession();
-        }
-        else
-        {
-            StartSession();
-        }
-    }
-
-    private void StartSession()
-    {
-        Debug.Log("[UIManager] Play button clicked - Starting session");
-        
-        isSessionActive = true;
-        
-        if (Timer.Instance != null)
-        {
-            Timer.Instance.StartTimer();
-        }
-        else
-        {
-            Debug.LogWarning("[UIManager] Timer.Instance is null!");
-        }
-        
-        if (SpawnerScript.Instance != null)
-        {
-            SpawnerScript.Instance.TriggerAllPlayerTeleportBridge();
-            
             if (uiCanvas != null)
             {
-                uiCanvas.SetActive(false);
+                bool isActive = !uiCanvas.activeSelf;
+                uiCanvas.SetActive(isActive);
+
+                if (isActive)
+                {
+                    UpdateUIState();
+                }
+
+                Debug.Log($"[UIManager] UI toggled to: {isActive}");
             }
         }
-        else
-        {
-            Debug.LogError("[UIManager] SpawnerScript.Instance is null!");
-        }
-    }
 
-    private void EndSession()
-    {
-        Debug.Log("[UIManager] Play button clicked - Ending session");
-        
-        isSessionActive = false;
-        
-        if (Timer.Instance != null)
+        private bool IsTherapist()
         {
-            Timer.Instance.StopTimer();
+            Network.Player localPlayer = FindLocalPlayer();
+
+            if (localPlayer == null)
+            {
+                Debug.LogWarning("[UIManager] Local player not found");
+                return false;
+            }
+
+            bool isTherapist = localPlayer.IsTherapist;
+            Debug.Log($"[UIManager] IsTherapist: {isTherapist}");
+
+            return isTherapist;
         }
-        
-        if (SpawnerScript.Instance != null)
+
+        private Network.Player FindLocalPlayer()
         {
-            SpawnerScript.Instance.TriggerAllPlayerTeleportField();
+            Network.Player[] players = FindObjectsOfType<Network.Player>();
+            foreach (var player in players)
+            {
+                if (player.Object != null && player.Object.HasInputAuthority)
+                {
+                    return player;
+                }
+            }
+
+            return null;
         }
-        else
+
+        private void UpdateUIState()
         {
-            Debug.LogError("[UIManager] SpawnerScript.Instance is null!");
+            if (isSessionActive)
+            {
+                playButtonText.text = "End Session";
+
+                // deactivate controls
+                bridgeSlider.interactable = false;
+                foreach (Button btn in timerButtons)
+                {
+                    btn.interactable = false;
+                }
+            }
+            else
+            {
+                playButtonText.text = "Start Session";
+
+                // activate controls
+                bridgeSlider.interactable = true;
+                foreach (Button btn in timerButtons)
+                {
+                    btn.interactable = true;
+                }
+            }
         }
-        
-        // UI remains open after ending session
-        UpdateUIState();
+
+        public void OnBridgeSliderChanged(float value)
+        {
+            if (isSessionActive) return; // settings not changeable during session
+
+            Debug.Log($"[UIManager] Slider changed to: {value}");
+
+            if (BridgeController.Instance != null)
+            {
+                BridgeController.Instance.UpdateHeight(value);
+            }
+            else
+            {
+                Debug.LogError("[UIManager] BridgeController.Instance is null!");
+            }
+        }
+
+        // timer methods
+        public void OnTimerButtonClicked(float minutes)
+        {
+            if (isSessionActive) return; // settings not changeable during session
+
+            selectedTimerDuration = minutes;
+
+            // Set the timer
+            if (Timer.Instance != null)
+                Timer.Instance.SetTimerDuration(minutes);
+
+            // Get the clicked button automatically
+            Button clicked = EventSystem.current.currentSelectedGameObject?.GetComponent<Button>();
+            if (clicked == null) return;
+
+            // Reset all sibling buttons colors
+            foreach (Transform sibling in clicked.transform.parent)
+            {
+                Button b = sibling.GetComponent<Button>();
+                if (b != null)
+                    b.image.color = b.colors.normalColor;
+            }
+
+            // Darken the clicked button slightly
+            Color c = clicked.image.color;
+            clicked.image.color = new Color(c.r * 0.7f, c.g * 0.7f, c.b * 0.7f, c.a);
+        }
+
+        public void SetTimerDuration(float minutes)
+        {
+            if (isSessionActive) return;
+
+            selectedTimerDuration = minutes;
+            Debug.Log($"[UIManager] Timer set to {minutes} minutes");
+
+            if (Timer.Instance != null)
+            {
+                Timer.Instance.SetTimerDuration(minutes);
+            }
+        }
+
+        public void OnPlayButtonClicked()
+        {
+            if (isSessionActive)
+            {
+                EndSession();
+            }
+            else
+            {
+                StartSession();
+            }
+        }
+
+        private void StartSession()
+        {
+            Debug.Log("[UIManager] Play button clicked - Starting session");
+
+            isSessionActive = true;
+
+            if (Timer.Instance != null)
+            {
+                Timer.Instance.StartTimer();
+            }
+            else
+            {
+                Debug.LogWarning("[UIManager] Timer.Instance is null!");
+            }
+
+            if (SpawnerScript.Instance != null)
+            {
+                SpawnerScript.Instance.TriggerAllPlayerTeleportBridge();
+
+                if (uiCanvas != null)
+                {
+                    uiCanvas.SetActive(false);
+                }
+            }
+            else
+            {
+                Debug.LogError("[UIManager] SpawnerScript.Instance is null!");
+            }
+        }
+
+        private void EndSession()
+        {
+            Debug.Log("[UIManager] Play button clicked - Ending session");
+
+            isSessionActive = false;
+
+            if (Timer.Instance != null)
+            {
+                Timer.Instance.StopTimer();
+            }
+
+            if (SpawnerScript.Instance != null)
+            {
+                SpawnerScript.Instance.TriggerAllPlayerTeleportField();
+            }
+            else
+            {
+                Debug.LogError("[UIManager] SpawnerScript.Instance is null!");
+            }
+
+            // UI remains open after ending session
+            UpdateUIState();
+        }
     }
 }

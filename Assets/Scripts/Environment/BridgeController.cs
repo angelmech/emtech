@@ -1,59 +1,62 @@
 using UnityEngine;
 using Fusion;
 
-/// <summary>
-/// Manages the bridge's height and related player spawn points.
-/// </summary>
-public class BridgeController : NetworkBehaviour
+namespace Environment
 {
-    public static BridgeController Instance;
-    
-    public Transform bridgeTransform;
-    public Transform spawnerTransform;
-    
-    [Networked, OnChangedRender(nameof(OnHeightChanged))]
-    public float NetworkedHeightStep { get; set; }
-    
-    void Awake()
+    /// <summary>
+    /// Manages the bridge's height and related player spawn points.
+    /// </summary>
+    public class BridgeController : NetworkBehaviour
     {
-        Instance = this;
-    }
-    
-    public void UpdateHeight(float step)
-    {
-        if (HasStateAuthority)
+        public static BridgeController Instance;
+
+        public Transform bridgeTransform;
+        public Transform spawnerTransform;
+
+        [Networked, OnChangedRender(nameof(OnHeightChanged))]
+        public float NetworkedHeightStep { get; set; }
+
+        void Awake()
+        {
+            Instance = this;
+        }
+
+        public void UpdateHeight(float step)
+        {
+            if (HasStateAuthority)
+            {
+                NetworkedHeightStep = step;
+            }
+            else
+            {
+                RPC_RequestHeightChange(step);
+            }
+        }
+
+        public void RPC_RequestHeightChange(float step)
         {
             NetworkedHeightStep = step;
         }
-        else
-        {
-            RPC_RequestHeightChange(step);
-        }
-    }
-    
-    public void RPC_RequestHeightChange(float step)
-    {
-        NetworkedHeightStep = step;
-    }
-    
-    // callback
-    void OnHeightChanged()
-    {
-        ApplyHeight(NetworkedHeightStep);
-    }
 
-    private void ApplyHeight(float step)
-    {
-        float targetY = 0f;
-
-        switch (Mathf.RoundToInt(step))
+        // callback
+        void OnHeightChanged()
         {
-            case 1: targetY = 30f; break;
-            case 2: targetY = 45f; break;
-            case 3: targetY = 60f; break; 
+            ApplyHeight(NetworkedHeightStep);
         }
 
-        Vector3 pos = bridgeTransform.localPosition;
-        bridgeTransform.localPosition = new Vector3(pos.x, targetY, pos.z);
+        private void ApplyHeight(float step)
+        {
+            float targetY = 0f;
+
+            switch (Mathf.RoundToInt(step))
+            {
+                case 1: targetY = 30f; break;
+                case 2: targetY = 45f; break;
+                case 3: targetY = 60f; break;
+            }
+
+            Vector3 pos = bridgeTransform.localPosition;
+            bridgeTransform.localPosition = new Vector3(pos.x, targetY, pos.z);
+        }
     }
 }
